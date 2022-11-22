@@ -33,10 +33,18 @@
     "policyRule": {
       "if": {
         "allOf": [
-          {
-            "field": "type",
-            "equals": "Microsoft.Compute/virtualMachines"
-          },
+          "anyOf": [
+              {
+                "count": {
+                  "value": "[parameters('listOfWindowsImageIdToInclude')]",
+                  "name": "pattern",
+                  "where": {
+                    "field": "Microsoft.Compute/imageId",
+                    "like": "[current('pattern')]"
+                  }
+                },
+                "greater": 0
+              },
           {
             "field": "location",
             "in": [
